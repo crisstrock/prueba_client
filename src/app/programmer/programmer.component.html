@@ -1,0 +1,93 @@
+<hr>
+<div class="container">
+  <div class="row">
+    <button type="button" class="btn btn-primary" (click)="open(content)">Add new Programmer</button>
+  </div>
+  <p>
+      <ngb-alert [type]="alert.type" (close)="close(alert)">{{ alert.message }}</ngb-alert>
+    </p>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr class="text-center">
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+        </thead>
+        <tbody *ngIf="programmers != null">
+            <tr *ngFor="let programmer of programmers">
+                <td class="text-center">
+                    <p class="text-primary">{{ programmer.nombre }}</p>
+                </td>
+                <td class="text-center">
+                  {{ programmer.perfil }}
+                </td>
+                <td class="text-center">
+                    {{ programmer.lan_favorito }}
+                </td>
+                <td class="text-center">
+                    <a href="{{ programmer.git_address }}">{{ programmer.git_address }}</a>
+                </td>
+                <td class="text-center">
+                        <button class="btn btn-info" (click)="showProg(programmer)">
+                                Show
+                              </button>
+                  <button class="btn btn-danger" (click)="deleteProg(programmer)">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+        </tbody>
+        <tbody *ngIf="programmers == null">
+          <tr>
+            No hay programadores registrados
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+<!-- Add Modal -->
+<ng-template #content let-modal>
+        
+    <div class="modal-header">
+      <h4 class="modal-title">Add Programmer</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form (submit)="addProgrammer($event)">
+    <div class="modal-body">
+      <div class="form-group">
+        <input type="text" class="form-control" name="nombre" placeholder="Enter nombre of the name" [(ngModel)]="nombre" [ngClass]="{'is-invalid' : nombre == '' && formSubmitted}">
+        <div class="invalid-feedback">Nombre can't be blank!</div>
+      </div>
+      <div class="form-group">
+      <input type="text" class="form-control" name="perfil" placeholder="Enter perfil" [(ngModel)]="perfil" [ngClass]="{'is-invalid' : perfil == '' && formSubmitted}">
+      <div class="invalid-feedback">Perfil can't be blank!</div>
+      </div>
+  <div class="form-group">
+    <select name="lan_favorito" class="form-control" [(ngModel)]="lan_favorito">
+        <option value="">Seleccionar</option>
+      <option value="Python">Python</option>
+      <option value="Java">Java</option>
+      <option value="PHP">PHP</option>
+      <option value="Javascript">Javascript</option>
+      <option value="Ruby">Javascript</option>
+      <option value="Angular">Angular</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" name="git_address" placeholder="Enter Git address" [(ngModel)]="git_address" [ngClass]="{'is-invalid' : git_address == '' && formSubmitted}">
+    <div class="invalid-feedback">Dirección Git can't be blank!</div>
+  </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+</form>
+
+</ng-template>
